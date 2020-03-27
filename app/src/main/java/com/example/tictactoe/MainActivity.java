@@ -57,21 +57,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void createLayout(int id) {
         LinearLayout linearLayout = (LinearLayout) findViewById(id);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT,1);
-
+        params.setMargins(20,20,20,20);
         for (int i = 0; i < SIZE ; i++) {
             Button button = new Button(this);
             button.setText("");
             button.setFreezesText(true);
+            button.setTextSize(60);
             linearLayout.addView(button, params);
+
             button.setOnClickListener(this);
             listOfBtns.add(button);
 
             //add styling to Layout and buttons:
-            linearLayout.setBackgroundColor(Color.rgb(189, 189, 189));
+            button.setBackgroundResource(R.drawable.button);
+            linearLayout.setBackgroundColor(Color.rgb(224,255,255));
 
-            button.setTextColor(Color.rgb(255,242,223));
-            button.getBackground().setColorFilter(Color.rgb(45, 45, 48), PorterDuff.Mode.MULTIPLY);
-            button.setTextSize(60);
+
         }
     }
 
@@ -82,8 +83,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         } else {
             if (player.equals("X")) {
+                ((Button) v).setTextColor(Color.rgb(0,10,10));
+
                 ((Button) v).setText("X");
             } else {
+                ((Button) v).setTextColor(Color.rgb(255,242,100));
                 ((Button) v).setText("O");
             }
             movesCount++;
@@ -91,12 +95,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (WonGame(player)) {
                 Toast toast1 = Toast.makeText(this, "Player "+ player + " wins!", Toast.LENGTH_LONG);
                 toast1.setGravity(Gravity.FILL_HORIZONTAL,0,0);
+                View toast1View = toast1.getView();
+                toast1View.setBackgroundColor(Color.rgb(0, 240,0));
                 toast1.show();
 
                 if (player.equals("X")) pointsPlayerX++;
                 else pointsPlayerO++;
 
                 updatePlayerScore();
+                return;
             }
 
             if (Draw()) {
@@ -165,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
        if(WonDiagonal(player) || WonStraigtLines(player)){
           for (Button button : listOfBtns) {
             button.setEnabled(false);
+
+
           }
           return true;
        }
@@ -173,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private boolean Draw(){
         if (this.movesCount == SIZE * 3) return true;
+
         else return false;
     }
 
